@@ -44,12 +44,34 @@ const roomSchema = new mongoose.Schema({
 
 // Define the schema for the Booking entity
 const bookingSchema = new mongoose.Schema({
+  user_id: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+  hotel_id: { type: mongoose.Schema.Types.ObjectId, ref: 'Hotel', required: true },
+  room_type: { type: String, required: true },
   check_in_date: { type: Date, required: true },
   check_out_date: { type: Date, required: true },
-  room_id: { type: mongoose.Schema.Types.ObjectId, ref: 'Room', required: true },
-  user_id: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
-  total_price: { type: Number, required: true }
+  num_guests: { type: Number, required: true },
+  price_per_night: { type: Number, required: true },
+  commission: { type: Number, required: true },
+  total_price: { type: Number, required: true },
+  created_at: { type: Date, default: Date.now },
+  updated_at: { type: Date, default: Date.now }
 });
+
+const Booking = mongoose.model('Booking', bookingSchema);
+
+const commissionPaymentSchema = new mongoose.Schema({
+  booking_id: { type: mongoose.Schema.Types.ObjectId, ref: 'Booking', required: true },
+  hotel_id: { type: mongoose.Schema.Types.ObjectId, ref: 'Hotel', required: true },
+  user_id: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+  commission_amount: { type: Number, required: true },
+  payment_date: { type: Date, required: true },
+  payment_status: { type: String, enum: ['pending', 'paid', 'late'], default: 'pending' },
+  created_at: { type: Date, default: Date.now },
+  updated_at: { type: Date, default: Date.now }
+});
+
+const CommissionPayment = mongoose.model('CommissionPayment', commissionPaymentSchema);
+
 
 // Define the models for each entity using their respective schemas
 const Hotel = mongoose.model('Hotel', hotelSchema);
