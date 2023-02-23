@@ -1,5 +1,13 @@
 const mongoose = require('mongoose');
 
+// Define the schema for the HotelUser entity
+const hotelUserSchema = new mongoose.Schema({
+  username: { type: String, required: true },
+  password: { type: String, required: true },
+  email: { type: String, required: true },
+  hotel_id: { type: mongoose.Schema.Types.ObjectId, ref: 'Hotel', required: true }
+});
+
 // Define the schema for the Hotel entity
 const hotelSchema = new mongoose.Schema({
   name: { type: String, required: true },
@@ -14,8 +22,15 @@ const hotelSchema = new mongoose.Schema({
   image: { type: String },
   amenities: { type: [String] },
   created_at: { type: Date, default: Date.now },
-  updated_at: { type: Date, default: Date.now }
+  updated_at: { type: Date, default: Date.now },
+  user_ids: [{ type: mongoose.Schema.Types.ObjectId, ref: 'HotelUser', required: true }]
 });
+
+// Define the models for each entity using their respective schemas
+const HotelUser = mongoose.model('HotelUser', hotelUserSchema);
+const Hotel = mongoose.model('Hotel', hotelSchema);
+
+
 
 // Define the schema for the Room entity
 const roomSchema = new mongoose.Schema({
