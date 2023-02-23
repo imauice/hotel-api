@@ -28,7 +28,7 @@ const hotelSchema = new mongoose.Schema({
 
 // Define the models for each entity using their respective schemas
 const HotelUser = mongoose.model('HotelUser', hotelUserSchema);
-const Hotel = mongoose.model('Hotel', hotelSchema);
+
 
 
 
